@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<std::vector<int>> merge(std::vector<std::vector<int>>& intervals) {
+        if (intervals.empty()) return {};
+
+        // 1. Sort by the start time
+        sort(intervals.begin(), intervals.end());
+
+        vector<vector<int>> merged;
+        
+        for (const auto& interval : intervals) {
+            // 2. If merged is empty or no overlap, push the interval
+            if (merged.empty() || interval[0] > merged.back()[1]) {
+                merged.push_back(interval);
+            } 
+            // 3. If there is an overlap, merge by updating the end time
+            else {
+                merged.back()[1] = std::max(merged.back()[1], interval[1]);
+            }
+        }
+
+        return merged;
+    }
+};
