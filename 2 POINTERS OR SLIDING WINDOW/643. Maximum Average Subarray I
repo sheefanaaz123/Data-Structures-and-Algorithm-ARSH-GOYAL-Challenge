@@ -1,0 +1,40 @@
+class Solution {
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+
+        int n = nums.size();
+
+        int left = 0;
+
+        double maxAvg = -1e9;
+
+        vector<int> runningSum(n);
+
+        runningSum[0] = nums[0];
+
+        for(int i = 1; i < n; i++) {
+            runningSum[i] = runningSum[i - 1] + nums[i];
+        }
+
+        for(int right = 0; right < n; right++) {
+
+            if(right - left + 1 == k) {
+
+                int sum;
+
+                if(left == 0)
+                    sum = runningSum[right];
+                else
+                    sum = runningSum[right] - runningSum[left - 1];
+
+                double currentAvg = (double)sum / k;
+
+                maxAvg = max(maxAvg, currentAvg);
+
+                left++;
+            }
+        }
+
+        return maxAvg;
+    }
+};
