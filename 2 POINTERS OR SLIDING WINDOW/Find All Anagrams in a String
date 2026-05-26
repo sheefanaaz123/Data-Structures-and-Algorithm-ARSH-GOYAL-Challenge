@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+
+        vector<int> result;
+
+        if(p.size() > s.size()) return result;
+
+        vector<int> pCount(26, 0);
+        vector<int> windowCount(26, 0);
+
+        // Store frequency of p
+        for(char c : p){
+            pCount[c - 'a']++;
+        }
+
+        int left = 0;
+
+        for(int right = 0; right < s.size(); right++){
+
+            // Add current character
+            windowCount[s[right] - 'a']++;
+
+            // Maintain window size
+            if(right - left + 1 > p.size()){
+                windowCount[s[left] - 'a']--;
+                left++;
+            }
+
+            // Compare frequencies
+            if(windowCount == pCount){
+                result.push_back(left);
+            }
+        }
+
+        return result;
+    }
+};
