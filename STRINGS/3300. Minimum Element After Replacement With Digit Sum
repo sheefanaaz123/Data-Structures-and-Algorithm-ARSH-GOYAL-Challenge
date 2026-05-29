@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minElement(vector<int>& nums) {
+        int result = 36;
+
+        for (int x : nums) {
+            int sum = 0;
+
+            for (char c : to_string(x)) {
+                sum += c - '0';
+            }
+
+            result = min(result, sum);
+        }
+
+        return result;
+    }
+};
