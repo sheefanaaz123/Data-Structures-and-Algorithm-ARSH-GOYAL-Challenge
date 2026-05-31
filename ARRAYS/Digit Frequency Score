@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int digitFrequencyScore(int n) {
+        unordered_map <char,int> mp;
+
+        for(auto c : to_string(n)){
+            mp[c]++;
+        }
+
+        int result = 0;
+
+        for(auto itr : mp ){
+            result += (itr.first - '0') * itr.second;
+        }
+
+        return result;
+        
+    }
+};
