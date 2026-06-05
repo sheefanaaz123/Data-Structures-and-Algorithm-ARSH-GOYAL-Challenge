@@ -1,0 +1,46 @@
+class Solution {
+public:
+    bool checkInclusion(string pattern, string text) {
+
+        // If the pattern is longer than the text,
+        // no permutation can exist.
+        if(text.size() < pattern.size()) return false;
+
+        int patternLength = pattern.size();
+
+        // Frequency count of characters in pattern
+        vector<int> patternFreq(26, 0);
+
+        // Frequency count of characters in current window
+        vector<int> windowFreq(26, 0);
+
+        for(char ch : pattern) {
+            patternFreq[ch - 'a']++;
+        }
+
+        int windowStart = 0;
+        int windowEnd = 0;
+
+        while(windowEnd < text.size()) {
+
+            // Add current character to the window
+            windowFreq[text[windowEnd] - 'a']++;
+
+            // Shrink window if it exceeds the required size
+            while(windowEnd - windowStart + 1 > patternLength) {
+                windowFreq[text[windowStart] - 'a']--;
+                windowStart++;
+            }
+
+            // If frequency distributions match,
+            // the current window is a permutation of pattern
+            if(patternFreq == windowFreq) {
+                return true;
+            }
+
+            windowEnd++;
+        }
+
+        return false;
+    }
+};
