@@ -1,0 +1,57 @@
+class Solution {
+public:
+
+    // All 8 possible movement directions (horizontal, vertical, and diagonals)
+    vector<pair<int,int>> directions = {
+        {0, 1},  {1, 0},  {-1, 0}, {0, -1}, // Right, Down, Up, Left
+        {1, 1}, {-1, -1}, {-1, 1}, {1, -1}  // Bottom-Right, Top-Left, Top-Right, Bottom-Left
+    };
+
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int distance = 0;
+
+        queue<pair<int,int>> q;
+
+        // Base Check: If starting cell or destination cell is blocked (1), no path exists
+        if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
+
+        // Start BFS from the top-left cell (0, 0)
+        q.push({0, 0});
+        grid[0][0] = 1; // Mark starting cell as visited to prevent re-processing
+
+        // Standard level-by-level BFS
+        while(!q.empty()){
+
+            int size = q.size(); // Number of nodes at the current distance level
+            distance++;          // Increment step/path length for this level
+
+            while(size--){
+                pair<int,int> temp = q.front();
+                q.pop();
+
+                int i = temp.first;
+                int j = temp.second;
+
+                // Reached the destination (bottom-right cell)
+                if(i == n - 1 && j == n - 1) return distance;
+
+                // Explore all 8 adjacent neighbors
+                for(auto dir : directions){
+
+                    int i_next = i + dir.first;
+                    int j_next = j + dir.second;
+
+                    // Boundary checks & ensure the neighboring cell is clear (0)
+                    if(i_next >= 0 && i_next < n && j_next >= 0 && j_next < n && grid[i_next][j_next] == 0) {
+                        q.push({i_next, j_next});
+                        grid[i_next][j_next] = 1; // Mark visited immediately upon enqueuing
+                    }
+                }
+            }
+        }
+
+        // Destination is unreachable
+        return -1;
+    }
+};
